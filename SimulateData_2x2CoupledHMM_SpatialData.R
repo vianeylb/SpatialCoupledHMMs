@@ -1,0 +1,67 @@
+##------------------------------------------
+## Simulating data for a coupled HMM 
+##  using two time series
+##------------------------------------------
+
+TT <- 2000 #number of observations
+
+init1 <- rep(0.5, 2)
+init2 <- rep(0.5, 2)
+
+tpm11 <- matrix(c(0.9, 0.1, 0.15, 0.85), nrow=2, byrow=T)
+tpm12 <- matrix(c(.7, 0.3, 0.3, 0.7), nrow=2, byrow=T)
+tpm22 <- matrix(c(0.95, 0.05, 0.01, 0.99), nrow=2, byrow=T)
+tpm21 <- matrix(c(.7, 0.3, 0.3, 0.7), nrow=2, byrow=T)
+## columns must sum to one for nghbor_weights
+nghbor_weights <- matrix(c(0.8, 0.2, 0.2, 0.8), nrow=2, byrow=T)
+
+states1 <- numeric(TT)
+states2 <- numeric(TT)
+
+states1[1] <- sample(x = 1:2, size = 1, prob = init1)
+states2[1] <- sample(x = 1:2, size = 1, prob = init2) 
+
+for(tt in 2:TT){
+  states1[tt] = sample(x=1:2, size=1, 
+                       prob=nghbor_weights[1,1]*tpm11[states1[tt-1],] + 
+                            nghbor_weights[2,1]*tpm21[states2[tt-1],])
+  states2[tt] = sample(x=1:2, size=1, 
+                       prob= nghbor_weights[2,2]*tpm22[states2[tt-1],] + 
+                             nghbor_weights[1,2]*tpm12[states1[tt-1],])
+}
+
+
+mu1 <- c(-3, 1)
+sd1 <- c(1, 1)
+
+mu2 <- c(-2, 3)
+sd2 <- c(1, 1)
+
+obs1 <- rnorm(n=TT, mean=mu1[states1], sd=sd1[states1])
+obs2 <- rnorm(n=TT, mean=mu2[states2], sd=sd2[states2])
+
+
+##------------------------------------------
+## Fitting the model in Stan
+##------------------------------------------
+
+
+library(rstan)
+
+fit.data <- list(TT=TT, 
+                 y1=obs1, 
+                 y2=obs2, 
+                 J = 2)
+
+fit <- stan(file="CoupledHMM_CompLike_2x2.stan", data = fit.data, chains=1)
+
+
+
+
+
+
+
+
+
+
+
