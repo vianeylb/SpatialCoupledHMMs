@@ -1,6 +1,8 @@
 // Spatial Coupled HMMs - 
 //   Trying out the composite likelihood appraoch
 
+
+//possibly garbage approximate likelihood approach
 data {
   
   //observations
@@ -68,8 +70,8 @@ model {
 
   mean1 ~ normal(0, 2);
   mean2 ~ normal(0, 2); 
-  sigma1 ~ student_t(3, 1, 1);
-  sigma2 ~ student_t(3, 1, 1);
+  sigma1 ~ normal(1, .1);
+  sigma2 ~ normal(1, .1);
   
   //taking the logarithm and transposing the tpm
   for(j in 1:(2*J)){
