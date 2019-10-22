@@ -49,7 +49,7 @@ model {
     for (n in 1:N){ // looping over states
       lp_p1[n] = log_sum_exp(log_tpm_tr[n] + lp);
       
-      if(y[t]> 0)
+      if(y[t] < 900)
        lp_p1[n] = lp_p1[n] +  normal_lpdf(y[t] | mu[n], sigma[n]); 
     }
     lp = lp_p1;

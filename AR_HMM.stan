@@ -3,12 +3,12 @@
 data {
   int<lower=1> N; // number of states
   int<lower=1> T; // length of data set
-  real y[T]; // observations
+  real<lower=0> y[T]; // observations
 }
 
 parameters {
   simplex[N] tpm[N]; // N x N tpm
-  ordered[N] mu; // state-dependent parameters
+  positive_ordered[N] mu; // state-dependent parameters
   vector<lower=0>[N] sigma;
   
   simplex[N] init;
@@ -26,12 +26,15 @@ model {
   
   // prior for mu - non-exchangeable preferred
   mu[1] ~ normal(2, 1);
-  mu[2] ~ normal(7, 1);
-  mu[3] ~ normal(10, 1);
-  //mu[4] ~ normal(15, 2);
+  mu[2] ~ normal(7, 2);
+  mu[3] ~ normal(13, 2);
+  mu[4] ~ normal(13, 2);
+  //mu[5] ~ normal(17, 2);
   
   //prior for sigma - non-exchangeable preferred
   sigma ~ student_t(3, 0, 1);
+  
+  rho ~ normal(0,0.3);
 
   // transpose the tpm and take natural log of entries
   for (n1 in 1:N)
@@ -50,7 +53,7 @@ model {
     for (n in 1:N){ // looping over states
       lp_p1[n] = log_sum_exp(log_tpm_tr[n] + lp);
       
-      if(y[t]> 0)
+      if(y[t] < 900)
        lp_p1[n] = lp_p1[n] +  normal_lpdf(y[t] | mu[n] + rho[n]*(mu[n]-y[t-1]), sigma[n]); 
     }
     lp = lp_p1;
