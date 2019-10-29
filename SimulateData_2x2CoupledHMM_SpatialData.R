@@ -31,14 +31,11 @@ for(tt in 2:TT){
 }
 
 
-mu1 <- c(-3, 1)
-sd1 <- c(1, 1)
+mu <- c(-3, 1)
+sdev <- c(1, 1)
 
-mu2 <- c(-2, 3)
-sd2 <- c(1, 1)
-
-obs1 <- rnorm(n=TT, mean=mu1[states1], sd=sd1[states1])
-obs2 <- rnorm(n=TT, mean=mu2[states2], sd=sd2[states2])
+obs1 <- rnorm(n=TT, mean=mu[states1], sd=sdev[states1])
+obs2 <- rnorm(n=TT, mean=mu[states2], sd=sdev[states2])
 
 
 ##------------------------------------------
