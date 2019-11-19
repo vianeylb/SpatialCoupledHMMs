@@ -28,7 +28,8 @@ model {
   //mu[2] ~ normal(7, 1);
   mu[2] ~ normal(10, 1);
   //mu[4] ~ normal(15, 2);
-  //mu[3] ~ normal(20, 5);
+  mu[3] ~ normal(20, 1);
+  mu[4] ~ normal(30, 2);
   
   //prior for sigma - non-exchangeable preferred
   sigma ~ student_t(3, 0, 1);

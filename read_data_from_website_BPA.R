@@ -66,4 +66,4 @@ for(i in 1:(length(names))){
   }
 }
 
-data <- bind_rows(datalist)
+wind.data <- bind_rows(datalist)
