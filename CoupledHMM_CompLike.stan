@@ -4,12 +4,12 @@
 data {
   
   //observations
-  int<lower=1> N;
-  vector[N] y1;
-  vector[N] y2;
+  int<lower=1> N_obs; //number of observations for each time series 
+  vector[N_obs] y1; // time series 1
+  vector[N_obs] y2; // time series 2
   
   //states
-  int<lower=1> J; 
+  int<lower=1> J; //number of states 
   
 }
 
