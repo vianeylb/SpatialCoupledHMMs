@@ -47,16 +47,21 @@ inv.logit <- function(x, group, G){
 # @ `prior.sd`: prior standard deviations for the beta terms
 # -----------------------------------------------------------------------
 
-cond_log_post<-function(tpm.row, X, betarow, row, prior.mean, prior.sd){
+cond_log_post<-function(tpm.row.obs, X, betarow, row, 
+                        prior.mean.int, prior.sd.int, 
+                        prior.mean.slope, prior.sd.slope, G){
   
-  ## beta is a (ncovs + 1)*(G-1) matrix
-  ## X is a [T, ncovs +1] matrix
+  ## beta is a (G-1)x2 matrix
+  ## X is a [T, 2] matrix
   
-  rowprobs  <- sapply(1:dim(X)[1], function(j) inv.logit(X[j,]%*%betarow, group=row, G=G))
+  Xbeta <- X%*%t(betarow)
   
-  like   <- sum(dmultinom(tpm.row, size = 1,prob = rowprobs,log=TRUE))
+  rowprobs  <- t(sapply(1:dim(X)[1], function(j) inv.logit(Xbeta[j,], group=row, G=G)))
   
-  prior  <- sum(dnorm(betarow ,prior.mean, prior.sd,log=TRUE))
+  like   <- sum(sapply(1:dim(X)[1], function(j) dmultinom(tpm.row.obs[j,], size = 1,prob = rowprobs[j,],log=TRUE)))
+  
+  prior  <- sum(dnorm(betarow[,1] ,prior.mean.int, prior.sd.int,log=TRUE)) + 
+    dnorm(betarow[1,2], prior.mean.slope, prior.sd.slope, log=TRUE)
   
   return(like+prior)
   

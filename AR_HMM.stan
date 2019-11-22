@@ -12,7 +12,7 @@ parameters {
   vector<lower=0>[N] sigma;
   
   simplex[N] init;
-  vector[N] rho;
+  real rho[N];
 }  
 
 model {
@@ -25,12 +25,12 @@ model {
   vector[N] lp_p1;
   
   // prior for mu - non-exchangeable preferred
-  mu[1] ~ normal(2, 1);
-  mu[2] ~ normal(7, 2);
-  mu[3] ~ normal(9, 2);
-  mu[4] ~ normal(12, 2);
-  mu[5] ~ normal(15, 2);
-  //mu[6] ~ normal(18, 2);  
+  mu[1] ~ normal(5, 1);
+  //mu[2] ~ normal(10, 2);
+  mu[2] ~ normal(15, 2);
+  mu[3] ~ normal(20, 2);
+  //mu[5] ~ normal(25, 2);
+  mu[4] ~ normal(30, 2);  
   //mu[7] ~ normal(20, 3);
   
   //prior for sigma - non-exchangeable preferred

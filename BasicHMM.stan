@@ -3,7 +3,7 @@
 data {
   int<lower=1> N; // number of states
   int<lower=1> T; // length of data set
-  real y[T]; // observations
+  real<lower=0> y[T]; // observations
 }
 
 parameters {
@@ -25,11 +25,15 @@ model {
   
   // prior for mu - non-exchangeable preferred
   mu[1] ~ normal(2, 1);
-  //mu[2] ~ normal(7, 1);
-  mu[2] ~ normal(10, 1);
-  //mu[4] ~ normal(15, 2);
-  mu[3] ~ normal(20, 1);
-  mu[4] ~ normal(30, 2);
+  mu[2] ~ normal(3, 1);
+  mu[3] ~ normal(7, 1);
+  mu[4] ~ normal(9, 1);
+  mu[5] ~ normal(10, 1);
+  mu[6] ~ normal(12, 1);
+  mu[7] ~ normal(15, 2);
+  mu[8] ~ normal(20, 1);
+  mu[9] ~ normal(25, 1);
+  mu[10] ~ normal(30, 2);
   
   //prior for sigma - non-exchangeable preferred
   sigma ~ student_t(3, 0, 1);
