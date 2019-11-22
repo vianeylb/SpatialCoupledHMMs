@@ -4,7 +4,7 @@ library(geoR) #for the inverse chi squred distribution
 # Gibbs Step
 # -----------------------------------------------------------------------
 
-### ASSUMING mu ~ N(prior.mean, prior.sd) (explicitly setting k0 = 1 -- BDA)
+### ASSUMING mu ~ N(prior.mean, prior.sd) (explicitly setting k0 = 1 -- BDA notation)
 
 mu.condpost.draw <- function(obs, mu.current, prior.mean, prior.sd, sigma.current) {
 
