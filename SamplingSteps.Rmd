@@ -1,0 +1,26 @@
+---
+title: "Sampling Steps"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Functions for MCMC
+
+- `TPMentriesMHinGibbs.R`  -- Posterior draw for a row of the TPM
+- `SDD_PostCondDist.R` -- Posterior draw from the state-dependent density parameters
+- `ForwardBackwardAlgorithm.Rcpp` -- Posterior draw from state probabilities
+
+
+
+
+
+### Simulation
+
+Assuming one spatial parameter for each row of the TPMs
+
+
+
