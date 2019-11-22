@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------
-# Metropolis Step within Gibbs
+# Metropolis Step for TPM Entries
 # -----------------------------------------------------------------------
 
 Bayes.mlogistic <- function(tpm.row.obs, 
