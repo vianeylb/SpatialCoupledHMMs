@@ -16,9 +16,9 @@ augs$`Wind Speed (MPH)`[augs$`Wind Speed (MPH)` == 0] <- 1000
 
 stan.data <- list(N=4, 
                   T=dim(augs)[1], 
-                  y = augs$`Wind Speed (MPH)`)
+                  y = log(augs$`Wind Speed (MPH)`))
 
-fit <- stan(file="BasicHMM.stan", data=stan.data, chains=1, iter = 1000) 
+fit <- stan(file="BasicHMM.stan", data=stan.data, chains=2, iter = 1000) 
 
 
 N <- 5

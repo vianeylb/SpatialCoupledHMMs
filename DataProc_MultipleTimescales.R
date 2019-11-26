@@ -30,12 +30,12 @@ library(rstan)
 options(mc.cores = parallel::detectCores())
 rstan_options(auto_write = TRUE)
 
-augs.avg$houravg[is.na(augs.avg$houravg)] <- 1000
-augs.avg$houravg[augs.avg$houravg== 0] <- 1000
+augs.avg.hourly$houravg[is.na(augs.avg.hourly$houravg)] <- 1000
+augs.avg.hourly$houravg[augs.avg.hourly$houravg== 0] <- 1000
 
-stan.data <- list(N=10, 
-                  T=dim(augs.avg)[1], 
-                  y = augs.avg$houravg)
+stan.data <- list(N=5, 
+                  T=dim(augs.avg.hourly)[1], 
+                  y = log(augs.avg.hourly$houravg))
 
 fit <- stan(file="BasicHMM.stan", data=stan.data, chains=1, iter = 1000) 
 
@@ -96,3 +96,7 @@ for(j in 90:100){
           delta[5]*dnorm(dx, mu[j,5], sigma[j,5]/sqrt((1-rho[j,5]^2))),
         col="red")
 }
+
+
+
+
