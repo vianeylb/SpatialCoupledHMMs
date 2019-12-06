@@ -24,10 +24,10 @@ model {
   vector[N] lp_p1;
   
   // prior for mu - non-exchangeable preferred
-  mu[1] ~ normal(0.5, 1);
-  mu[2] ~ normal(1.5, 1);
+  mu[1] ~ normal(0, 1);
+  mu[2] ~ normal(1, 1);
   mu[3] ~ normal(2, 1);
-  mu[4] ~ normal(2.5, 1);
+  mu[4] ~ normal(3, 1);
   //mu[5] ~ normal(3, 1);
 
   

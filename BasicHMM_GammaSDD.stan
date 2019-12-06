@@ -30,9 +30,9 @@ model {
   
   // prior for mu - non-exchangeable preferred
   mu[1] ~ normal(2, 1);
-  mu[2] ~ normal(5, 1);
-  mu[3] ~ normal(10, 1);
-  mu[4] ~ normal(15, 2);
+  mu[2] ~ normal(10, 1);
+  mu[3] ~ normal(20, 1);
+  //mu[4] ~ normal(15, 2);
   
   //prior for sigma - non-exchangeable preferred
   sigma ~ student_t(3, 0, 1);

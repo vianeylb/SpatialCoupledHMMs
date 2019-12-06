@@ -3,7 +3,7 @@
 data {
   int<lower=1> N; // number of states
   int<lower=1> T; // length of data set
-  real<lower=0> y[T]; // observations
+  real y[T]; // observations
 }
 
 parameters {
@@ -25,13 +25,10 @@ model {
   vector[N] lp_p1;
   
   // prior for mu - non-exchangeable preferred
-  mu[1] ~ normal(5, 1);
-  //mu[2] ~ normal(10, 2);
-  mu[2] ~ normal(15, 2);
-  mu[3] ~ normal(20, 2);
-  //mu[5] ~ normal(25, 2);
-  mu[4] ~ normal(30, 2);  
-  //mu[7] ~ normal(20, 3);
+  mu[1] ~ normal(0, 1);
+  mu[2] ~ normal(1, 1);
+  mu[3] ~ normal(2, 1);
+  mu[4] ~ normal(3, 1);
   
   //prior for sigma - non-exchangeable preferred
   sigma ~ student_t(3, 0, 1);
@@ -56,7 +53,7 @@ model {
     for (n in 1:N){ // looping over states
       lp_p1[n] = log_sum_exp(log_tpm_tr[n] + lp);
       
-      if(y[t] < 900)
+     //if(y[t] < 900)
        lp_p1[n] = lp_p1[n] +  normal_lpdf(y[t] | mu[n] + rho[n]*(mu[n]-y[t-1]), sigma[n]); 
     }
     lp = lp_p1;
