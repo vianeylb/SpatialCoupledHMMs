@@ -33,6 +33,13 @@ month_year <- data.frame(year = c(rep(2010, 11),
 
 month_year <- data.frame(year=rep(2015, each=12), 
                          month=c(1:12))
+
+## For only one location, during a certain period of the year use: 
+
+## names <- names[j] -- where j indicates the indices desired
+## month_year <- month_year[k] -- where k indicates the indices desired
+
+
 #--------------------------------------------------------------------------
 # LOOPING OVER STATION NAMES AND MONTH/YEARS OF DATA
 #--------------------------------------------------------------------------
