@@ -1,0 +1,161 @@
+---
+title: "Spatial Coupled HMM Update"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+library(tidyverse)
+library(lubridate)
+library(rstan)
+options(mc.cores = parallel::detectCores())
+rstan_options(auto_write = TRUE)
+
+load("augs2000")
+
+```
+
+
+
+## Coupled HMM  
+
+Let $G$ reflect the number of states, $N$ the number of spatial locations and $T$ be the length of each time series (assumed to be equal). 
+
+For now, we suppose that the observation process is conditionally independent given the state process, as such: 
+
+$$
+[ Y_t^{[n]} | Z_t^{[n]} ] \sim N(\mu_g^{[n]}, \sigma_g^{[n]})
+$$
+
+And the transition probability matrix is the same at all locations, with entries: 
+
+$$
+mlogit(\gamma_{ij}^{[n]}) = \beta_{0, ij}^{[n]} + \beta \sum_{s \sim n}\text{I}\left(Z_{t-1}^{[s]} = j\right)
+$$
+
+
+## MCMC 
+
+We use a Gibbs sampler to obtain draws from the joint posterior distribution, as detailed in `Scalable Bayesian Inference for Coupled Hidden Markov and Semi-Markov Models` (Touloupou et al, 2019). 
+
+That is, we alternate between drawing from the distribution of $Pr(\boldsymbol{Z}^{[n]} | \boldsymbol{Y}^{[n]}, \boldsymbol{Z}^{[-n]})$ using the individual Forward Filtering Backward Sampling algorithm and using other approaches to draw from the joint distribution of the state-dependent parameters and parameters of the t.p.m.
+
+For $p(\boldsymbol{\mu}, \boldsymbol{\sigma}| \cdot )$ we use conjugate priors and sample directly from the conditional posterior distribution. 
+
+For $p(\boldsymbol{\beta}| \cdot)$ we use Hamiltonian Monte Carlo. 
+
+
+## Augspurger Data 
+
+For a single site, Augspurger, modeling a week of data as a Markov-switching AR(1) process. First, we can visualize the Augspurger data set at the original 5-minute interval from approximately Jan 1-8, 2015.  
+
+```{r, echo=FALSE}
+
+augs%>%ggplot(aes(mdy_hms(`Date/Time (UTC)`), log(`Wind Speed (MPH)`))) + geom_path() + xlab("")
+
+```
+
+
+The model is extended in order to account for conditional dependence among the observations, rather than the general conditional independence assumed by an HMM. 
+
+State-dependent distributions: 
+
+$$
+[ Y_t|Z_t = g ] \sim N\left( \mu_g + \rho_g (Y_{t-1} - \mu_g), \sigma_g \right)
+$$
+For now, we assume a time-homogeneous Markov process for the states. 
+
+
+### 2-state MS-AR(1) Results
+
+```{r, echo=FALSE}
+
+load("fit_ar2_02052020")
+
+```
+
+
+Marginal distributions of $\mu_g$: 
+
+```{r echo=FALSE, message=FALSE}
+
+plot(fit_ar2, pars=c("mu"), plotfun="hist")
+
+```
+
+Marginal distributions of $\rho_g$: 
+
+```{r echo=FALSE, message=FALSE}
+
+plot(fit_ar2, pars=c("rho"), plotfun="hist")
+
+```
+
+Marginal distribution of the transition probability matrix (TPM): 
+
+```{r echo=FALSE, message=FALSE}
+
+plot(fit_ar2, pars=c("tpm"), plotfun="hist")
+
+```
+
+__State Decoding__
+
+
+
+### 3-state MS-AR(1) Results
+
+```{r echo=FALSE}
+
+load("fit_ar3_02052020")
+
+```
+
+The specification of the 3 states results in a mismatch between the model specification and the data, leading to multiple local modes in the posterior distribution. 
+
+Marginal distributions of $\mu_g$: 
+
+```{r echo=FALSE, message=FALSE}
+
+plot(fit_ar3, pars=c("mu"), plotfun="hist")
+
+```
+
+Marginal distributions of $\rho_g$: 
+
+```{r echo=FALSE, message=FALSE}
+
+plot(fit_ar3, pars=c("rho"), plotfun="hist")
+
+```
+
+Of note for the marginal distributions of the $\rho_g$ are the times when $\rho_g \approx 1$. 
+
+
+Marginal distribution of the transition probability matrix (TPM): 
+
+```{r echo=FALSE, message=FALSE}
+
+plot(fit_ar3, pars=c("tpm"), plotfun="hist")
+
+```
+
+
+
+## Next Steps
+
+Model construction and MCMC is starting from a simpler construction, while analysis of the actual data is beginning with MS-AR modeling frameworks for each individual location. 
+
+1. Fit MS-AR models to each location with the same number of states 
+
+2. Finish the MCMC for the coupled HMM for multiple locations
+
+3. Extend the coupled HMM MCMC to account for the autoregressive processes
+
+
+
+

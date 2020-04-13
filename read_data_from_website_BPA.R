@@ -36,8 +36,9 @@ month_year <- data.frame(year=rep(2015, each=12),
 
 ## For only one location, during a certain period of the year use: 
 
-## names <- names[j] -- where j indicates the indices desired
-## month_year <- month_year[k] -- where k indicates the indices desired
+#names <- c("NaselleRidge", "Megler") #-- where j indicates the indices desired
+names <- c("Augspurger", "HoodRiver") 
+month_year <- month_year[1,] #-- where k indicates the indices desired
 
 
 #--------------------------------------------------------------------------

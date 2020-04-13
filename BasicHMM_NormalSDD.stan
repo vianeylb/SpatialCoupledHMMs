@@ -24,15 +24,10 @@ model {
   vector[N] lp_p1;
   
   // prior for mu - non-exchangeable preferred
-  mu[1] ~ normal(2, 1);
-  mu[2] ~ normal(5, 1);
-  mu[3] ~ normal(7, 1);
-  mu[4] ~ normal(9, 1);
-  mu[5] ~ normal(11, 1);
-  mu[6] ~ normal(13, 2);
-  mu[7] ~ normal(15, 2);
-  mu[8] ~ normal(17, 2);
-    
+   mu[1] ~ normal(5 , 0.5);
+   //mu[2] ~ normal(5, 0.5);
+   //mu[3] ~ normal(10, 1);
+   mu[2] ~ normal(15, 1);
   //prior for sigma - non-exchangeable preferred
   sigma ~ student_t(3, 0, 1);
 
@@ -52,9 +47,7 @@ model {
   for (t in 2:T) { // looping over observations
     for (n in 1:N){ // looping over states
       lp_p1[n] = log_sum_exp(log_tpm_tr[n] + lp);
-      
-      if(y[t] < 900)
-       lp_p1[n] = lp_p1[n] +  normal_lpdf(y[t] | mu[n], sigma[n]); 
+      lp_p1[n] = lp_p1[n] +  normal_lpdf(y[t] | mu[n], sigma[n]); 
     }
     lp = lp_p1;
   }

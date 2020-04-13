@@ -1,6 +1,8 @@
 # read in Augspurger data - Jan 2015
 
-month_year <- month_year[1,]
+library(lubridate)
+
+smonth_year <- month_year[1,]
 names <- "Augspurger"
 augs$`Date/Time (UTC)` <- mdy_hms(augs$`Date/Time (UTC)`)
 
@@ -14,7 +16,7 @@ augs <- wind.data%>%filter(location=="Augspurger")
 augs$`Wind Speed (MPH)`[is.na(augs$`Wind Speed (MPH)`)] <- 1000
 augs$`Wind Speed (MPH)`[augs$`Wind Speed (MPH)` == 0] <- 1000
 
-stan.data <- list(N=4, 
+stan.data <- list(N=2, 
                   T=dim(augs)[1], 
                   y = log(augs$`Wind Speed (MPH)`))
 
@@ -47,11 +49,14 @@ lines(dx,  delta[1,j]*dnorm(dx, mu[j,1], sigma[j,1]) +
 
 #--------------------------------------------------------------------------------
 
+
 stan.data <- list(N=4, 
                   T=dim(augs)[1], 
                   y = log(augs$`Wind Speed (MPH)`))
 
-fit_ar <- stan(file="AR_HMM.stan", data=stan.data, chains=1, iter = 1000) 
+fit_ar4 <- stan(file="AR_HMM.stan", data=stan.data, chains=2, iter = 1000) 
+#fit_drift3 <- stan(file="AR_HMM_Ys.stan", data=stan.data, chains=2, iter = 1000) 
+
 
 N <- 5
 mu <- rstan::extract(fit_ar, pars=c("mu"))[[1]]

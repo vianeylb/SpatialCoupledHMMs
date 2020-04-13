@@ -18,9 +18,9 @@ init <- rep(1/N, N)
 tpm <- matrix(c(0.8, 0.2, 0.3, 0.7), ## row corresponds to state 3
               byrow=T, nrow=2)
 
-len <- 1000
-mu <- c(5, 10)
-sd <- c(2, 1)
+len <- 200
+mu <- c(0, 10)
+sd <- c(1, 1)
 
 #-------------------------------------------------------------------------
 # Simulate Data
@@ -53,9 +53,17 @@ ggplot(data=tibble(x=1:len, y=obs, group=factor(states)),
   theme_minimal() + scale_color_discrete(name="State")
 
 ggplot(data=tibble(x=1:len, y=obs, group=factor(states)), 
-       aes(x, y)) + geom_point(aes(color=group)) + xlab("X") + ylab("Y") + 
+       aes(x, y)) + geom_point(aes(color=group)) + xlab("Time") + ylab("Y") + 
   theme_minimal() + scale_color_discrete(name="States") + 
-  geom_path(aes(x=1:len, y=obs), alpha=0.3)
+  geom_path(aes(x=1:len, y=obs), alpha=0.3) +
+  transition_reveal(along = x) + 
+  shadow_mark()
+
+ggplot(data=tibble(x=1:len, y=obs, group=factor(states)), 
+       aes(x, y)) + geom_point(aes(color=group), size=2) + xlab("Time") + ylab("Y") + 
+  theme_minimal() + scale_color_discrete(name="States") + 
+  transition_time(x) + 
+  shadow_mark()
 
 
 state1dur <- dgeom(x = 0:100, prob = 0.2)
