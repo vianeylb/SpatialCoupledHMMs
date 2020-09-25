@@ -1,0 +1,13 @@
+---
+title: "Coupled Hidden Markov Model Markov chain Monte Carlo + Forecasting"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Coupled HMM MCMC
+
+We 
+

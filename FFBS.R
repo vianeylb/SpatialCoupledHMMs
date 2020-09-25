@@ -44,7 +44,6 @@ ffbs <- function(N, TT, log_gamma_tr, gamma, log_delta, steps, shape, rate){
     stateDraws[t0] = sample(x=1:N, size=1, prob = t0prob_unnorm/sum(t0prob_unnorm))
     
   }
-  
 
   return(stateDraws)
   

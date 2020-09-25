@@ -51,6 +51,8 @@ hmc_step <- function(log_posterior, gradient, step_size, l, position, Tlen, N, s
   }
 }
 
+
+
 hmc <- function(log_posterior, gradient, step_size, l, initP, m, Tlen, N, states_primary, states_nghbors){
   out <- matrix(NA_real_, nrow = m, ncol = length(initP))
   out[1, ] <- initP
